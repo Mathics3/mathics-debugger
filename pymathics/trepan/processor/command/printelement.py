@@ -23,6 +23,7 @@ from pymathics.trepan.processor.command.base_cmd import DebuggerCommand
 from pymathics.trepan.lib.format import format_element, pygments_format
 
 DictKeysType = type({}.keys())
+DictValuesType = type({}.values())
 
 class PrintElementCommand(DebuggerCommand):
     """**printelement** [-p] [*Mathics3 element*]
@@ -70,11 +71,11 @@ class PrintElementCommand(DebuggerCommand):
         except Exception:
             return
 
-        if not allow_python or not isinstance(value, (dict, list, tuple)):
+        if not allow_python or not isinstance(value, (dict, list, tuple, DictKeysType, DictValuesType)):
             if not isinstance(value, (AtomPattern, BaseElement,
                                       ExpressionPattern, FunctionApplyRule, RewriteRule)):
                 self.errmsg(f"text: {text} does not evaluate to a type I know about; is {type(value)}")
-                if isinstance(value, (dict, list, tuple, DictKeysType)):
+                if isinstance(value, (dict, list, tuple, DictKeysType, DictValuesType)):
                     self.msg("Try adding option -p?")
                 return
 
